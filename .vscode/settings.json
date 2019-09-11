@@ -1,5 +1,6 @@
 {
     "files.watcherExclude": {
         "3rd_party/**": true
-    }
+    },
+    "git.ignoreLimitWarning": true
 }

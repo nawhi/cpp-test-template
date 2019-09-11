@@ -1,11 +1,11 @@
-#define BOOST_TEST_MODULE Hello World Tests
-#include <boost/test/unit_test.hpp>
+
+#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
+#include <doctest.h>
 
 #include "helloworld.h"
 
-BOOST_AUTO_TEST_CASE( Hello_World )
+TEST_CASE("checking Hello World")
 {
     HelloWorld hello{"Good Night Vienna"};
-
-    BOOST_CHECK( hello.getMessage() != "Good Night Vienna");
+    CHECK( hello.getMessage() != "Good Night Vienna");
 }
