@@ -3,11 +3,19 @@
 A template C++ project using CMake and Boost::Test.
 
 ## Compilation instructions (Linux)
-Run the following from the repository root:
-```
+From project root:
+```sh
+# Create and cd into build folder
 mkdir -p build
 cd build
+# Run CMake to boostrap Makefiles
 cmake ..
+
+# Run GNU make for compilation
 make
-make test
+
+# Execute test executable
+make check
+
+# for more output you can also
 ```

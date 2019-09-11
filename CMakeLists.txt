@@ -30,3 +30,6 @@ foreach(testSource ${TEST_SOURCES})
 
     add_test(NAME ${testName} COMMAND ${testName})
 endforeach(testSource)
+
+# make CTest show full output (by default, it only shows pass/fail)
+add_custom_target(check COMMAND ${CMAKE_MAKE_PROGRAM} && ${CMAKE_CTEST_COMMAND} --verbose)
