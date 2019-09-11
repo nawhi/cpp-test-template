@@ -1,6 +1,7 @@
 # Test Project Template
 
-A template C++ project using CMake and Boost::Test.
+A template C++ project using CMake and the Doctest framework.
+Tested on MacOS and Ubuntu Linux, and should also work in VC++.
 
 ## Compilation instructions (Linux)
 From project root:
