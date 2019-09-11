@@ -15,6 +15,7 @@ ENDIF()
 # build source library
 file(GLOB SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} src/*.cpp)
 add_library(mycode STATIC ${SOURCES})
+target_include_directories(mycode PUBLIC include)
 
 # build test libraries
 file(GLOB TEST_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} test/*.cpp)
@@ -23,10 +24,9 @@ foreach(testSource ${TEST_SOURCES})
     add_executable(${testName} ${testSource})
 
     target_include_directories(${testName} PUBLIC 3rd_party)
+    target_include_directories(${testName} PUBLIC include)
 
     target_link_libraries(${testName} mycode)
 
-    add_test(NAME ${testName}
-            WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/testBin
-            COMMAND ${CMAKE_BINARY_DIR}/testBin/${testName})
+    add_test(NAME ${testName} COMMAND ${testName})
 endforeach(testSource)
