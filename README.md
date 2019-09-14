@@ -12,11 +12,6 @@ cd build
 # Run CMake to boostrap Makefiles
 cmake ..
 
-# Run GNU make for compilation
-make
-
-# Execute test executable
+# Compile and execute tests 
 make check
-
-# for more output you can also
 ```
