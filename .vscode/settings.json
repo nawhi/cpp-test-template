@@ -1,5 +1,8 @@
 {
     "files.watcherExclude": {
         "3rd_party/**": true
+    },
+    "files.associations": {
+        "*.ipp": "cpp"
     }
 }

@@ -1,40 +1,42 @@
-project(cpp_boost_test_template)
+# These 2 lines required by all CMakeLists.txt files
 cmake_minimum_required(VERSION 3.5)
+project(mykata)
 
-enable_testing()
-
+# Enforce C++17
 set(CXX_STANDARD 17)
 set(CXX_STANDARD_REQUIRED ON)
 
+# Add compilation flags
 IF (CMAKE_CXX_COMPILER_ID MATCHES "GNU" OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wshadow -Wformat=2 -std=c++${CXX_STANDARD}")
 ELSEIF (MSVC)
   SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W4")
 ENDIF()
 
-set(BOOST_INCLUDEDIR 3rd_party/boost/include)
-set(BOOST_LIBRARYDIR 3rd_party/boost/lib)
-
-find_package(Boost 
-    COMPONENTS unit_test_framework 
-    REQUIRED)
-include_directories(${Boost_INCLUDE_DIRS} ${CMAKE_SOURCE_DIR}/include)
-
-
-# build source library
+# Source library
+# NB: as this gets bigger will probably want to move it to
+# its own CMakeLists.txt in the src subdirectory
 file(GLOB SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} src/*.cpp)
-add_library(cpp_boost_test_template STATIC ${SOURCES})
+add_library(mycode STATIC ${SOURCES})
+target_include_directories(mycode PUBLIC include)
 
-# build test libraries
-file(GLOB TEST_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} test/*.cpp)
-foreach(testSource ${TEST_SOURCES})
-    get_filename_component(testName ${testSource} NAME_WE)
-    add_executable(${testName} ${testSource})
+# Build test executable
+enable_testing()
+file(GLOB TEST_SOURCES test/*.cpp)
+add_executable(unit_tests ${TEST_SOURCES})
 
-    target_link_libraries(${testName} ${Boost_LIBRARIES})
+# Unit test framework (UTF) header lives in 3rd_party
+target_include_directories(unit_tests PUBLIC 3rd_party)
 
-    add_test(NAME ${testName}
-            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/testBin
-            COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/testBin/${testName})
+# Link headers and library from business code
+target_include_directories(unit_tests PUBLIC include)
+target_link_libraries(unit_tests mycode)
 
-endforeach(testSource)
+# Compile and link all files in test directory to test executable
+target_link_directories(unit_tests PUBLIC test)
+
+# Add the executable as a test, so CTest can find it
+add_test(NAME all_tests COMMAND unit_tests)
+
+# Make CTest show full output (by default, it only shows pass/fail)
+add_custom_target(check COMMAND ${CMAKE_MAKE_PROGRAM} && ${CMAKE_CTEST_COMMAND} --verbose)
