@@ -26,7 +26,7 @@ file(GLOB TEST_SOURCES test/*.cpp)
 add_executable(unit_tests ${TEST_SOURCES})
 
 # Unit test framework (UTF) header lives in 3rd_party
-target_include_directories(unit_tests PUBLIC 3rd_party)
+target_include_directories(unit_tests PUBLIC 3rd_party/boost/include)
 
 # Link headers and library from business code
 target_include_directories(unit_tests PUBLIC include)
